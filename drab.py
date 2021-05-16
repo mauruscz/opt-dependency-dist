@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Feb 27 11:44:43 2021
-
-@author: giovanni
-"""
 import spacy
 from spacy import displacy
 from pathlib import Path
@@ -66,23 +61,25 @@ def parse_txt(data, file):
 			conll = io.StringIO(out)
 			df = pd.read_csv(conll, header = None, sep = '\t')
 			if len(df) >1:
-			#remove punctuation signs	  	
+				
+				#remove punctuation marks	  	
 				pun = df.index[df[5] == 'punct'].tolist()   
 				pun = sorted(pun)     
 				el_pun =  [x+1 for x in pun]
 
+				#If the root is a punctuation mark, the sentence is invalid
 				for i in range(0, len(pun)):
 					  if df[2][pun[i]] == 0:
-						  print("Invalid sentence")
+						  bug = True
 			
-				
-				for j in range(0, len(df[4])): #rescale
+				#rescale in case punctuation are not leaves
+				for j in range(0, len(df[4])): 
 					if df[4][j]!= 0:
 						if df[4][j] in el_pun:
 						    prec = df[4][j]
 						    df[4][j] = df[4][prec-1]
 				
-				for j in range(0, len(df[4])): #rescale           
+				for j in range(0, len(df[4])):            
 					num_v = sum(df[4][j] >= i+1 for i in pun)
 					df[4][j] = df[4][j]-num_v            
 
@@ -96,6 +93,7 @@ def parse_txt(data, file):
 				
 				l_in = range(1, len(l)+1)
 				
+				#Sanity checks: Exactly a root, feasible maximum value.
 				if len(l) >3:
 					root = l.index(0) +1
 					if root not in l:
@@ -110,24 +108,23 @@ def parse_txt(data, file):
 							bug = True
 					if l.count(0) != 1:
 							bug = True
-						
-												
+									
 					if not bug:
 						res.append(l)
-					
-						
+								
 			else:
 				count_short +=1
-        
 		except:
 			count_err +=1
 
+	#Trasform treebank in a string
 	res1 = []
 	for i in res:
 		res1.append(" ".join(str(x) for x in i))
 	res = res1
 	
 	return res
+
 
     
 
@@ -151,6 +148,7 @@ for file in files:
 	filetxt = file+ ".txt" 
 	
 	fp = open("drab/" +filetxt,encoding="windows-1252")
+	#Create monolithic string
 	data = fp.read()
 	data = data.replace("\n", " ")
 	data = data.replace("\t", " ")
@@ -159,6 +157,7 @@ for file in files:
 	chunks = 1
 	dati = []
 	k = 0
+	#avoid spacy overloading by splitting large files
 	if(len(data) >500000):
 		firstpart, secondpart = data[:len(data)//2], data[len(data)//2:]
 		dati.append(firstpart)
