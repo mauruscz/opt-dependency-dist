@@ -6,5 +6,5 @@ By executing these you can respectively create the treebanks for all the books b
 
 The execution requires some hours to be runned, this is why we keep two different files.
 
-If you want to analyze the treebanks without re-executing calculations, you can find them in the folders _treebanks-drab.py_ and _treebaks-mur.py_
+If you want to analyze the treebanks without re-executing calculations, you can find them in the folders _treebanks-drab.py_ and _treebanks-mur.py_
 
