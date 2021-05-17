@@ -125,7 +125,6 @@ def parse_txt(data, file):
 	
 	return res
 
-
     
 
 
@@ -136,7 +135,7 @@ def parse_txt(data, file):
 
 
 
-files = [i for i in os.listdir("./drab") if i.endswith("txt")]
+files = [i for i in os.listdir("./books") if i.endswith("txt")]
 files_new = []
 
 for file in files:
@@ -147,9 +146,9 @@ files = files_new
 for file in files:
 	filetxt = file+ ".txt" 
 	
-	fp = open("drab/" +filetxt,encoding="windows-1252")
-	#Create monolithic string
+	fp = open("books/" +filetxt,encoding="windows-1252")
 	data = fp.read()
+	#Create monolithic string
 	data = data.replace("\n", " ")
 	data = data.replace("\t", " ")
 	data = ' '.join(data.split())
@@ -166,7 +165,7 @@ for file in files:
 	else:
 		dati.append(data)
 
-	open("treebanks-drab/out-" +filetxt, 'w').close()  
+	open("treebanks-demo/out-" +filetxt, 'w').close()  
 
 	print("chunks: " + str(chunks))
 
@@ -180,7 +179,7 @@ for file in files:
 
 		
 		for i in range(0, len(res)):
-			with open("treebanks-drab/out-" +filetxt, 'a') as f:
+			with open("treebanks-demo/out-" +filetxt, 'a') as f:
 				if res[i] != '' and len(res[i]) > 2:  
 					f.write("%s " % res[i])
 					f.write("\n")    
